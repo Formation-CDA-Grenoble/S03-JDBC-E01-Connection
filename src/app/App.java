@@ -1,6 +1,8 @@
 package app;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import app.Article;
 
@@ -35,15 +37,26 @@ public class App {
 
         // Traite chaque résultat de la requête, jusqu'à ce que les résultats
         // soient épuisés
+        List<Article> articlesList = new ArrayList<>();
+
         while (resultSet.next()) {
+            // Crée un nouvel objet de type Article
             Article article = new Article();
+            // Peuple l'objet avec les données tirées de la base
             article.id = resultSet.getInt(1);
             article.title = resultSet.getString(2);
             article.created_at = resultSet.getDate(3);
             article.updated_at = resultSet.getDate(4);
             article.content = resultSet.getString(5);
             article.author = resultSet.getInt(6);
-            article.inspect();
+            // Ajoute l'article à une liste
+            articlesList.add(article);
+        }
+
+        // Pour chaque article enregistré dans la liste
+        for (Article item: articlesList) {
+            // Affiche les propriétés de l'article
+            item.inspect();
         }
     }
 }
