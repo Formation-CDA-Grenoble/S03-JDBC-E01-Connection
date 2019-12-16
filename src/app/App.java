@@ -2,6 +2,8 @@ package app;
 
 import java.sql.*;
 
+import app.Article;
+
 public class App {
     // Nom du logiciel permettant de se connecter à MariaDB
     static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
@@ -28,13 +30,20 @@ public class App {
         // Exécute une requête SQL
         System.out.println("Executing SQL query...");
         ResultSet resultSet = statement.executeQuery(
-            "SELECT `title` FROM `article` WHERE `author` = 1 ORDER BY `created_at` DESC"
+            "SELECT * FROM `article` WHERE `author` = 1 ORDER BY `created_at` DESC"
         );
 
         // Traite chaque résultat de la requête, jusqu'à ce que les résultats
         // soient épuisés
         while (resultSet.next()) {
-            System.out.println(resultSet.getString(1));
+            Article article = new Article();
+            article.id = resultSet.getInt(1);
+            article.title = resultSet.getString(2);
+            article.created_at = resultSet.getDate(3);
+            article.updated_at = resultSet.getDate(4);
+            article.content = resultSet.getString(5);
+            article.author = resultSet.getInt(6);
+            article.inspect();
         }
     }
 }
